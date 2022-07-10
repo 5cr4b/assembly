@@ -1,0 +1,95 @@
+.model small
+.stack 100h
+.data 
+    xau1 db 50 dup('$')  
+    xau2 db 50 dup('$')
+    crlf db 10,13, '$' 
+    tb1 db 'k giong$'
+    tb2 db ' giong$'
+    
+.code
+
+main proc
+    mov ax,@data
+    mov ds,ax            
+    
+    lea si, xau1
+    lea di, xau2   
+    mov cx,0
+    mov bx,0
+    nhapxau1:
+        mov ah,1
+        int 21h
+        
+        cmp al,13
+        je nhapxau2
+        
+        mov [si],al
+        inc si 
+        inc bx
+        jmp nhapxau1
+        
+    nhapxau2:   
+        mov ah,9
+        lea dx,crlf
+        int 21h
+        nhapxau22:
+            mov ah,1
+            int 21h
+            
+            cmp al,13
+            je sododai
+            
+            mov [di],al
+            inc di  
+            inc cx
+            jmp nhapxau22
+    
+        
+    sododai:
+        cmp bx,cx
+        jne kbang
+        jmp sosanh
+                  
+    sosanh: 
+        mov al,[si]
+        mov bl,[di]
+        
+        cmp al,bl
+        jne kbang
+        inc si
+        inc di    
+        
+        loop sosanh     
+    
+    bang:   
+    
+        mov ah,9
+        lea dx,crlf
+        int 21h
+        
+        lea dx,tb2
+        int 21h 
+        jmp thoat
+        
+    kbang:     
+        mov ah,9
+        
+        lea dx,crlf
+        int 21h 
+        
+        lea dx,tb1
+        int 21h
+           
+    thoat:
+        mov ah,4ch
+        int 21h       
+end main
+        
+        
+        
+            
+      
+       
+                  
+        
