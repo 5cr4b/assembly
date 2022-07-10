@@ -1,0 +1,48 @@
+.model small 
+.stack 100h
+.data
+    xau db 50 dup('$')    
+    crlf db 13, 10, '$'
+.code     
+
+main proc   
+    mov ax,@data
+    mov ds,ax
+    
+    lea si,xau
+    mov cx,0
+    lap:
+        mov ah,01
+        int 21h
+        
+        cmp al,13
+        je nhapxong
+        
+        mov [si],al  
+        mov dx,[si]
+        push dx
+        inc si
+        inc cx
+        
+        jmp lap
+    
+        
+    nhapxong:
+        mov ah,9         
+        lea dx, crlf
+        int 21h
+        
+        inkq:
+        pop dx
+        mov ah,2
+        int 21h 
+        dec cx
+        cmp cx,0
+        jne inkq
+          
+        
+    thoat:    
+        mov ah,4ch
+        int 21h
+          
+ end main
